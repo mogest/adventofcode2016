@@ -2,4 +2,4 @@
 
 Written (mostly) in Elixir.
 
-Self-enforced rule: all solutions must consist of a single statement.
+Self-enforced constraint: all solutions must consist of a single statement.
