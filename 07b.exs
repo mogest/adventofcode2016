@@ -15,36 +15,36 @@ defmodule Day07 do
   end
 
   def supports_ssl?(address) do
-    {outside, inside} = split_address(address)
+    {supernet, hypernet} = split_address(address)
 
-    supports_ssl?(outside, inside)
+    supports_ssl?(supernet, hypernet)
   end
 
-  def supports_ssl?([a, b, a | _] = [_ | tail], inside) do
-    matching_bab?(a, b, inside) || supports_ssl?(tail, inside)
+  def supports_ssl?([a, b, a | _] = [_ | tail], hypernet) when a != b do
+    matching_bab?(a, b, hypernet) || supports_ssl?(tail, hypernet)
   end
 
-  def supports_ssl?([_ | tail], inside) do
-    supports_ssl?(tail, inside)
-  end
+  def supports_ssl?([_ | tail], hypernet), do: supports_ssl?(tail, hypernet)
+  def supports_ssl?([], _),                do: false
 
-  def supports_ssl?([], _) do
-    false
-  end
-
-  def matching_bab?(a, b, inside) do
-    a != b && String.contains?(inside, b <> a <> b)
+  def matching_bab?(a, b, hypernet) do
+    String.contains?(hypernet, b <> a <> b)
   end
 
   def split_address(address) do
-    {
-      String.split(address, hypernet_regex) |> Enum.join(" ") |> String.graphemes,
-      Regex.scan(hypernet_regex, address) |> List.flatten |> Enum.join(" ")
-    }
+    split_address(String.graphemes(address), [], [])
   end
 
-  def hypernet_regex do
-    ~r/\[\w+\]/
+  def split_address([], supernet, hypernet) do
+    {supernet, hypernet |> Enum.join}
+  end
+
+  def split_address([letter | tail], part_a, part_b) do
+    if letter in ~w([ ]) do
+      split_address(tail, [letter | part_b], part_a)
+    else
+      split_address(tail, [letter | part_a], part_b)
+    end
   end
 end
 
