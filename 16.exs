@@ -19,15 +19,14 @@ defmodule Day16 do
 
   def mutate(data), do: Enum.reduce(data, [], &[1 - &1 | &2])
 
-  def calculate_checksum(data) do
+  def calculate_checksum(data) when rem(length(data), 2) == 0 do
     data
     |> Enum.chunk(2)
     |> Enum.map(fn [a, a] -> 1; _ -> 0 end)
-    |> rerun_if_even
+    |> calculate_checksum
   end
 
-  def rerun_if_even(checksum) when rem(length(checksum), 2) == 0, do: calculate_checksum(checksum)
-  def rerun_if_even(checksum),                                    do: checksum
+  def calculate_checksum(data), do: data
 end
 
 Day16.run
