@@ -6,10 +6,10 @@ defmodule Day19a do
     |> IO.puts
   end
 
-  def reduce([elf | []], []),         do: elf
-  def reduce([], rest),               do: reduce(Enum.reverse(rest), [])
-  def reduce([elf | []], rest),       do: reduce([elf | Enum.reverse(rest)], [])
-  def reduce([a | [_ | tail]], rest), do: reduce(tail, [a | rest])
+  def reduce([elf | []], []),        do: elf
+  def reduce([], rest),              do: reduce(Enum.reverse(rest), [])
+  def reduce([elf | []], rest),      do: reduce([elf | Enum.reverse(rest)], [])
+  def reduce([elf, _ | tail], rest), do: reduce(tail, [elf | rest])
 end
 
 defmodule Day19b do
